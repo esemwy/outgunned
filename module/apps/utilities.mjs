@@ -17,9 +17,9 @@ export class OutgunnedUtilities {
     }
 
   static async getDataset(el, dataitem) {
-    const elem = await el.target ? el.target : el[0];
+    const elem = await el instanceof HTMLElement ? el : (el?.target ?? el?.[0]);
     const element = await elem?.closest(".item");
-    return element.dataset[dataitem];
+    return element?.dataset[dataitem];
   }    
 
   static async confirmation(name, type) {
@@ -223,9 +223,9 @@ if (dataitem === 'grit') {
   }  
 
   static async viewAttribute(el, actor) {
-    const elem = await el.target ? el.target : el[0];
+    const elem = await el instanceof HTMLElement ? el : (el?.target ?? el?.[0]);
     const element = await elem?.closest(".attribute-name");
-    const attName = element.dataset.attkey
+    const attName = element?.dataset.attkey
     const dialogData ={}
     let newScores = await AttViewDialog.create(actor.system.abilities[attName].label,actor.system.abilities[attName].value,actor.system.abilities[attName].role,actor.system.abilities[attName].trope)
     await actor.update({[`system.abilities.${attName}.value`]: newScores.value,
@@ -375,7 +375,7 @@ console.log(this)
 
 
   static async triggerEditHot (el, actor) {
-    const elem = await el.target ? el.target : el[0]
+    const elem = await el instanceof HTMLElement ? el : (el?.target ?? el?.[0])
     const targetScore = Number(elem.dataset.target)
     if (actor.system.hot[targetScore] === 'not') {
       await actor.update({[`system.hot.${targetScore}`]: 'hot'});      
@@ -385,7 +385,7 @@ console.log(this)
   }
 
   static async triggerEditBad (el, actor) {
-    const elem = await el.target ? el.target : el[0]
+    const elem = await el instanceof HTMLElement ? el : (el?.target ?? el?.[0])
     const targetScore = Number(elem.dataset.target)
     if (actor.system.hot[targetScore] === 'bad') {
       await actor.update({[`system.hot.${targetScore}`]: 'not'});      
@@ -395,7 +395,7 @@ console.log(this)
   }
 
   static async triggerEditNeed (el, actor) {
-    const elem = await el.target ? el.target : el[0]
+    const elem = await el instanceof HTMLElement ? el : (el?.target ?? el?.[0])
     const targetScore = Number(elem.dataset.target)
       await actor.update({[`system.need.hot.${targetScore}`]: !actor.system.need.hot[targetScore]});      
   }
